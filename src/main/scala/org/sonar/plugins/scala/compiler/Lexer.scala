@@ -25,6 +25,8 @@ import org.sonar.plugins.scala.language.{Comment, CommentType}
 import scala.reflect.io.AbstractFile
 import scala.reflect.internal.util.BatchSourceFile
 
+import scala.collection.immutable.Range
+
 /**
  * This class is a wrapper for accessing the lexer of the Scala compiler
  * from Java in a more convenient way.
@@ -35,7 +37,9 @@ import scala.reflect.internal.util.BatchSourceFile
 class Lexer {
 
   import scala.collection.JavaConversions._
-  import Compiler._
+  import Compiler.CompilationUnit
+  import Compiler.syntaxAnalyzer
+
 
   def getTokens(code: String): java.util.List[Token] = {
     val unit = new CompilationUnit(new BatchSourceFile("", code.toCharArray))
@@ -73,7 +77,7 @@ class Lexer {
     val comments = ListBuffer[Comment]()
     val scanner = new syntaxAnalyzer.UnitScanner(unit) {
 
-      private var lastDocCommentRange: Option[Range] = None
+      private var lastDocCommentRange: Option[scala.collection.immutable.Range] = None
 
       private var foundToken = false
 
@@ -82,16 +86,16 @@ class Lexer {
         foundToken = token != 0
       }
 
-      override def foundComment(value: String, start: Int, end: Int) = {
-        super.foundComment(value, start, end)
-
+      // This is no longer part of the syntax analyzer UnitParser
+      // Took out the override that was here.
+      def foundComment(value: String, start: Int, end: Int) = {
         def isHeaderComment(value: String) = {
           !foundToken && comments.isEmpty && value.trim().startsWith("/*")
         }
 
         lastDocCommentRange match {
 
-          case Some(r: Range) => {
+          case Some(r: scala.collection.immutable.Range) => {
             if (r.start != start || r.end != end) {
               comments += new Comment(value, CommentType.NORMAL)
             }
@@ -107,8 +111,9 @@ class Lexer {
         }
       }
 
-      override def foundDocComment(value: String, start: Int, end: Int) = {
-        super.foundDocComment(value, start, end)
+      // This is no longer part of the syntax analyzer UnitParser
+      // Took out the override that was here.
+      def foundDocComment(value: String, start: Int, end: Int) = {
         comments += new Comment(value, CommentType.DOC)
         lastDocCommentRange = Some(Range(start, end))
       }

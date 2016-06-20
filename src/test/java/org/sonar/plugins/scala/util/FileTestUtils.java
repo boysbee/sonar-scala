@@ -64,7 +64,7 @@ public final class FileTestUtils {
             relativePath = relativePath.substring(1);
       }
      
-      DefaultInputFile inputFile = new DefaultInputFile(relativePath);
+      DefaultInputFile inputFile = new DefaultInputFile("", relativePath);
       inputFile.setLanguage(fileSuffix);
       inputFile.setAbsolutePath(resourceURL.getPath());
       

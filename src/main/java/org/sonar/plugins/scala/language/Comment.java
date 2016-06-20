@@ -13,18 +13,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package org.sonar.plugins.scala.language;
 
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**
@@ -74,7 +74,7 @@ public class Comment {
 
     int numberOfCommentedOutLinesOfCode = 0;
     for (String line : lines) {
-      String strippedLine = org.apache.commons.lang.StringUtils.strip(line, " /*");
+      String strippedLine = org.apache.commons.lang3.StringUtils.strip(line, " /*");
       if (CodeDetector.hasDetectedCode(strippedLine)) {
         numberOfCommentedOutLinesOfCode++;
       }

@@ -27,6 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.io.IOException;
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class BaseMetricsSensorTest {
 
   @Before
   public void setUp() {
-	this.fileSystem = new DefaultFileSystem();
+	this.fileSystem = new DefaultFileSystem(new File(""));
 	this.baseMetricsSensor = new BaseMetricsSensor(new Scala(), fileSystem);
     
 	this.project = mock(Project.class);

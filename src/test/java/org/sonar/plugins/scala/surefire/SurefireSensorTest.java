@@ -30,6 +30,7 @@ import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
+import java.io.File;
 
 public class SurefireSensorTest {
 
@@ -41,7 +42,7 @@ public class SurefireSensorTest {
     @Before
     public void setUp() {
     	this.settings = new Settings();
-    	this.fileSystem = new DefaultFileSystem();
+    	this.fileSystem = new DefaultFileSystem(new File("src/test/resources"));
     	sensor = new SurefireSensor(settings, fileSystem);
     	project = mock(Project.class);
     }
@@ -55,7 +56,7 @@ public class SurefireSensorTest {
     
     @Test
     public void should_execute_if_filesystem_contains_scala_files() {
-	  DefaultInputFile javaFile = new DefaultInputFile("src/org/foo/scala");
+	  DefaultInputFile javaFile = new DefaultInputFile("", "src/org/foo/scala");
 	  javaFile.setLanguage("scala");
 	  fileSystem.add(javaFile);
       SurefireSensor surefireSensor = new SurefireSensor(settings,fileSystem);
@@ -64,7 +65,7 @@ public class SurefireSensorTest {
 
     @Test
     public void should_not_execute_if_filesystem_does_not_contains_scala_files() {
-	  DefaultInputFile scalaFile = new DefaultInputFile("src/org/foo/java");
+	  DefaultInputFile scalaFile = new DefaultInputFile("", "src/org/foo/java");
 	  scalaFile.setLanguage("java");
 	  fileSystem.add(scalaFile);
       SurefireSensor surefireSensor = new SurefireSensor(settings,fileSystem);

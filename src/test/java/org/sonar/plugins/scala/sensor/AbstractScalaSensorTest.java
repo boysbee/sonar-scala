@@ -33,6 +33,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.util.FileTestUtils;
 
+import java.io.File;
+
 public class AbstractScalaSensorTest {
 
   private AbstractScalaSensor abstractScalaSensor;
@@ -41,7 +43,7 @@ public class AbstractScalaSensorTest {
 
   @Before
   public void setUp() {
-	fileSystem = new DefaultFileSystem();
+	fileSystem = new DefaultFileSystem(new File(""));
     abstractScalaSensor = new AbstractScalaSensor(new Scala(), fileSystem) {
 
       public void analyse(Project project, SensorContext context) {

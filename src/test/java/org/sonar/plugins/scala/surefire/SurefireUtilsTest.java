@@ -23,52 +23,30 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+
+
 import java.io.File;
 
-import org.apache.maven.project.MavenProject;
-import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.config.Settings;
-import org.sonar.api.test.MavenTestUtils;
+import org.sonar.api.scan.filesystem.PathResolver;
+
 
 public class SurefireUtilsTest {
 
-   private DefaultFileSystem fileSystem;
-   private Settings settings;
-    
-   @Before
-   public void setUp() {
-	   this.fileSystem = new DefaultFileSystem(); 
-	   this.settings = mock(Settings.class);
-   }
 
   @Test
   public void shouldGetReportsFromProperty() {
-	fileSystem.setBaseDir(new File("src/test/resources/surefire"));
-    when(settings.getString("sonar.junit.reportsPath")).thenReturn("targetdir/surefire-reports");
-    assertThat(SurefireUtils.getReportsDirectory(fileSystem, settings, null).exists()).isTrue();
-    assertThat(SurefireUtils.getReportsDirectory(fileSystem, settings, null).isDirectory()).isTrue();
+        Settings settings = new Settings();
+        settings.setProperty("sonar.junit.reportsPath", "target/surefire");
+
+        DefaultFileSystem fs = new DefaultFileSystem(new File("src/test/resources/org.sonar.plugins.scala/surefire/SurefireUtilsTest.shouldGetReportsFromProperty"));
+        PathResolver pathResolver = new PathResolver();
+        assertThat(SurefireUtils.getReportsDirectory(settings, fs, pathResolver).exists()).isTrue();
+        assertThat(SurefireUtils.getReportsDirectory(settings, fs, pathResolver).isDirectory()).isTrue();
   }
 
-  @Ignore("caused test failures on release")
-  @Test
-  public void shouldGetReportsFromPluginConfiguration() {
-    MavenProject pom = MavenTestUtils.loadPom(getClass(), "shouldGetReportsFromPluginConfiguration/pom.xml"); 
-    assertThat(SurefireUtils.getReportsDirectory(fileSystem, settings, pom).exists()).isTrue();
-    assertThat(SurefireUtils.getReportsDirectory(fileSystem, settings, pom).isDirectory()).isTrue();
-  }
-
-  @Ignore("caused test failures on release")
-  @Test
-  public void shouldGetReportsFromDefaultConfiguration() {
-	fileSystem.setBaseDir(new File("src/test/resources/surefire"));
-	File reportsDir = SurefireUtils.getReportsDirectory(fileSystem, settings, null);
-    assertThat(reportsDir.getPath().endsWith("src/test/resources/surefire/target/surefire-reports")).isTrue();
-    assertThat(reportsDir.getPath().endsWith("src/test/resources/surefire/target/foo")).isFalse();
-  }
-  
-  
 
 }

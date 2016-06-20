@@ -31,7 +31,7 @@ import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
@@ -40,7 +40,10 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
+
+// This has been deprecated, but it looks like the replacement might have been depracated again in 5.6
 import org.sonar.api.measures.CoverageMeasuresBuilder;
+
 import org.sonar.api.measures.Measure;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.api.utils.XmlParserException;

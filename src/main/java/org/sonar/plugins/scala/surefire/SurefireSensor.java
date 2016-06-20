@@ -13,15 +13,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package org.sonar.plugins.scala.surefire;
 
 import java.io.File;
 
-import org.apache.maven.project.MavenProject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
@@ -32,13 +31,14 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.scala.language.Scala;
+import org.sonar.api.scan.filesystem.PathResolver;
 
 public class SurefireSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(SurefireSensor.class);
   private final Settings settings;
   private final FileSystem fileSystem;
-  private MavenProject pom;
+  private PathResolver pathResolver;
 
   @DependsUpon
   public Class<?> dependsUponCoverageSensors() {
@@ -50,10 +50,10 @@ public class SurefireSensor implements Sensor {
 	  this.fileSystem = fileSystem;
   }
   
-  public SurefireSensor (Settings settings, FileSystem fileSystem, MavenProject pom){
+  public SurefireSensor (Settings settings, FileSystem fs, PathResolver pathResolver){
 	  this.settings = settings;
-	  this.fileSystem = fileSystem;
-	  this.pom = pom;
+	  this.fileSystem = fs;
+	  this.pathResolver = pathResolver;
   }
   
   public boolean shouldExecuteOnProject(Project project) {  
@@ -67,7 +67,7 @@ public class SurefireSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-	  File dir = SurefireUtils.getReportsDirectory(fileSystem, settings, pom);
+	  File dir = SurefireUtils.getReportsDirectory(settings, fileSystem, pathResolver);
 	    collect(project, context, dir);
   }
 

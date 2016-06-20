@@ -49,6 +49,7 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.scan.filesystem.PathResolver;
 import org.sonar.api.test.IsMeasure;
 
+
 public class CoberturaSensorTest {
 
   private Project project;
@@ -62,7 +63,7 @@ public class CoberturaSensorTest {
   public void setUp() {
 	project = mock(Project.class);
     context = mock(SensorContext.class);
-    fs = new DefaultFileSystem();
+    fs = new DefaultFileSystem(new File(""));
     pathResolver = mock(PathResolver.class);
     settings = new Settings();
     sensor = new CoberturaSensor(fs, pathResolver, settings);
@@ -132,7 +133,7 @@ public class CoberturaSensorTest {
 
   @Test
   public void collectFileLineCoverage() throws URISyntaxException {
-	DefaultInputFile file = new DefaultInputFile("org/apache/commons/chain/config/ConfigParser.scala");
+	DefaultInputFile file = new DefaultInputFile("", "org/apache/commons/chain/config/ConfigParser.scala");
 	fs.add(file); 
 	sensor = new CoberturaSensor(fs, pathResolver, settings);
 	sensor.parseReport(getCoverageReport(), context);
@@ -143,7 +144,7 @@ public class CoberturaSensorTest {
 
   @Test
   public void collectFileBranchCoverage() throws URISyntaxException {
-	  DefaultInputFile file = new DefaultInputFile("org/apache/commons/chain/config/ConfigParser.scala");
+	  DefaultInputFile file = new DefaultInputFile("", "org/apache/commons/chain/config/ConfigParser.scala");
 	  fs.add(file); 
 	  sensor = new CoberturaSensor(fs, pathResolver, settings);  
 	  sensor.parseReport(getCoverageReport(), context);
@@ -161,7 +162,7 @@ public class CoberturaSensorTest {
 
   @Test
   public void collectFileLineHitsData() throws URISyntaxException {
-	DefaultInputFile file = new DefaultInputFile("org/apache/commons/chain/impl/CatalogBase.scala");
+	DefaultInputFile file = new DefaultInputFile("", "org/apache/commons/chain/impl/CatalogBase.scala");
 	fs.add(file);
 	sensor = new CoberturaSensor(fs, pathResolver, settings);
     sensor.parseReport(getCoverageReport(), context);
@@ -177,7 +178,7 @@ public class CoberturaSensorTest {
   
   @Test
   public void should_execute_if_filesystem_contains_scala_files() {
-	  DefaultInputFile scalaFile = new DefaultInputFile("src/org/foo/scala");
+	  DefaultInputFile scalaFile = new DefaultInputFile("", "src/org/foo/scala");
 	  scalaFile.setLanguage("scala");
 	  fs.add(scalaFile);
 	  sensor = new CoberturaSensor(fs, pathResolver, settings);  
@@ -186,7 +187,7 @@ public class CoberturaSensorTest {
 
   @Test
   public void should_not_execute_if_filesystem_does_not_contains_scala_files() {
-	  DefaultInputFile javaFile = new DefaultInputFile("src/org/foo/java");
+	  DefaultInputFile javaFile = new DefaultInputFile("", "src/org/foo/java");
 	  javaFile.setLanguage("java");
 	  fs.add(javaFile);
 	  sensor = new CoberturaSensor(fs, pathResolver, settings);  
