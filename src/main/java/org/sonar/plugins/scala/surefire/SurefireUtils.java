@@ -1,7 +1,7 @@
 /*
- * Sonar Scala Plugin
- * Copyright (C) 2011 - 2014 All contributors
- * dev@sonar.codehaus.org
+ * SonarQube
+ * Copyright (C) 2011-2016 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
